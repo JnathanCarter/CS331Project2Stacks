@@ -1,5 +1,6 @@
 
 package stacks.and.queues.project;
+
 /**
  *
  * @author maurz
@@ -14,60 +15,61 @@ public class LispEvaluator {
     /**
      * @param args the command line arguments
      */
-public static void main(String[] args) {
-    
-Stack<Integer> st = new Stack<>();
+    public static void main(String[] args) {
 
-Scanner sc = new Scanner(System.in);
+        Stack<Integer> st = new Stack<>();
 
-String input = sc.nextLine();
+        // get espression from the user
+        Scanner sc = new Scanner(System.in);
+        String input = sc.nextLine();
 
-Vector<String> li = new Vector<String>();
+        Vector<String> li = new Vector<String>();
 
-StringTokenizer stoken = new StringTokenizer(input," ");
+        StringTokenizer stoken = new StringTokenizer(input, " ");
 
-while (stoken.hasMoreTokens()) {
-    li.add(stoken.nextToken(" "));
-}
-    
-for(int i=li.size()-1;i>=0;i--) {
+        // add each character token to list
+        while (stoken.hasMoreTokens()) {
+            li.add(stoken.nextToken(" "));
+        }
 
-if( li.get(i).equals("(") || li.get(i).equals(")"))
-    continue;
-else if(li.get(i).equals("+") || li.get(i).equals("-") || li.get(i).equals("*") || li.get(i).equals("/") )
-{
-    while(st.size()>1)
-    {
-        switch (li.get(i)) {
-            case "+":
-                st.push(st.pop() + st.pop());
-                break;
-            case "-":
-                st.push(st.pop() - st.pop());
-                break;
-            case "*":
-                st.push(st.pop() * st.pop());
-                break;
-            case "/":
-                st.push(st.pop() / st.pop());
-                break;
-            default:
-                break;
+        // loop over list starting from the back
+        for (int i = li.size() - 1; i >= 0; i--) {
+
+            // Ignore paranthesis
+            if (li.get(i).equals("(") || li.get(i).equals(")"))
+                continue;
+            // if an operator
+            else if (li.get(i).equals("+") || li.get(i).equals("-") || li.get(i).equals("*") || li.get(i).equals("/")) {
+                // while the stack has operands pop off the stack and do corresponding operation
+                while (st.size() > 1) {
+                    switch (li.get(i)) {
+                        case "+":
+                            st.push(st.pop() + st.pop());
+                            break;
+                        case "-":
+                            st.push(st.pop() - st.pop());
+                            break;
+                        case "*":
+                            st.push(st.pop() * st.pop());
+                            break;
+                        case "/":
+                            st.push(st.pop() / st.pop());
+                            break;
+                        default:
+                            break;
+                    }
+                }
             }
+            // then must be operand and add to the stack
+            else {
+                int n = Integer.parseInt(li.get(i));
+                st.push(n);
+            }
+
+        }
+
+        System.out.println(input + " evaluates to " + st.peek());
+
     }
-}
-else
-{
-    int n = Integer.parseInt(li.get(i));
-    st.push(n);
-}
 
 }
-
-System.out.println(input + " evaluates to " + st.peek());
-
-}
-
-}
-
-
